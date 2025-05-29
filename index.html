@@ -54,12 +54,13 @@
     color: #999;
     margin-bottom: 30px;
   }
-  .btn {
-    display: block;
+  .btn,
+  .btn.discord {
+    display: inline-block;
     width: 100%;
+    box-sizing: border-box;
     margin: 10px 0;
     padding: 12px;
-    background: linear-gradient(to right, #00bfff, #0099cc);
     border: none;
     border-radius: 10px;
     color: white;
@@ -67,14 +68,17 @@
     font-weight: 600;
     cursor: pointer;
     transition: 0.3s ease;
+    text-align: center;
     text-decoration: none;
   }
-  .btn:hover {
-    filter: brightness(1.15);
+  .btn {
+    background: linear-gradient(to right, #00bfff, #0099cc);
   }
   .btn.discord {
     background: #5865F2;
-    text-decoration: none;
+  }
+  .btn:hover {
+    filter: brightness(1.15);
   }
   .footer {
     margin-top: 30px;
@@ -133,4 +137,4 @@
     window.addEventListener('load', fetchPlaceId);
   </script>
 </body>
-</html> 
+</html>
