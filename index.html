@@ -1,115 +1,136 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Roblox Game Launcher</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top left, #101010, #0a0a0a);
-      color: #ffffffcc;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .status {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      background-color: #002200;
-      color: #00ff00;
-      padding: 6px 14px;
-      font-weight: bold;
-      font-size: 14px;
-      border-radius: 10px;
-      box-shadow: 0 0 8px #00ff0044;
-      z-index: 10;
-    }
-
-    .launcher-box {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(25px);
-      border-radius: 18px;
-      padding: 40px 30px;
-      max-width: 420px;
-      width: 100%;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-      text-align: center;
-    }
-
-    .launcher-box h1 {
-      font-size: 24px;
-      color: #ffffffee;
-      margin-bottom: 10px;
-    }
-
-    .launcher-box p {
-      font-size: 14px;
-      color: #999;
-      margin-bottom: 30px;
-    }
-
-    .btn {
-      display: block;
-      width: 100%;
-      margin: 10px 0;
-      padding: 12px;
-      background: linear-gradient(to right, #00bfff, #0099cc);
-      border: none;
-      border-radius: 10px;
-      color: white;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s ease;
-      text-decoration: none;
-    }
-
-    .btn:hover {
-      filter: brightness(1.15);
-    }
-
-    .btn.discord {
-      background: #5865F2;
-      text-decoration: none;
-    }
-
-    .footer {
-      margin-top: 30px;
-      font-size: 12px;
-      color: #666;
-      letter-spacing: 1px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Roblox Game Launcher</title>
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+    background: radial-gradient(circle at top left, #101010, #0a0a0a);
+    color: #ffffffcc;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .status {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: #002200;
+    color: #00ff00;
+    padding: 6px 14px;
+    font-weight: bold;
+    font-size: 14px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px #00ff0044;
+    z-index: 10;
+  }
+  .status.offline {
+    background-color: #440000;
+    color: #ff4444;
+    box-shadow: 0 0 8px #ff444422;
+  }
+  .launcher-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(25px);
+    border-radius: 18px;
+    padding: 40px 30px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    text-align: center;
+  }
+  .launcher-box h1 {
+    font-size: 24px;
+    color: #ffffffee;
+    margin-bottom: 10px;
+  }
+  .launcher-box p {
+    font-size: 14px;
+    color: #999;
+    margin-bottom: 30px;
+  }
+  .btn {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 12px;
+    background: linear-gradient(to right, #00bfff, #0099cc);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+    text-decoration: none;
+  }
+  .btn:hover {
+    filter: brightness(1.15);
+  }
+  .btn.discord {
+    background: #5865F2;
+    text-decoration: none;
+  }
+  .footer {
+    margin-top: 30px;
+    font-size: 12px;
+    color: #666;
+    letter-spacing: 1px;
+  }
+</style>
 </head>
 <body>
-  <div class="status">🟢 Game Online</div>
+  <div id="status" class="status">Loading...</div>
 
   <div class="launcher-box">
     <h1>Roblox Game Launcher</h1>
     <p>Launch directly into the game below. Roblox must be installed.</p>
-    <button class="btn" onclick="launchRoblox()">Join Game</button>
-    <a class="btn discord" href="https://discord.gg/abce155" target="_blank">Join Discord</a>
+    <button class="btn" id="joinBtn" disabled>Join Game</button>
+    <a class="btn discord" href="https://discord.gg/abce155" target="_blank" rel="noopener noreferrer">Join Discord</a>
     <div class="footer">SCM Softwares</div>
   </div>
 
   <script>
-    const placeId = "123456";  
-    function launchRoblox() {
-      window.location.href = `roblox://placeID=${placeId}`;
+    const pastebinRawUrl = "https://raw.githubusercontent.com/SCM-SW/Plcdat/refs/heads/main/Plclink";
+
+    async function fetchPlaceId() {
+      const statusEl = document.getElementById('status');
+      const joinBtn = document.getElementById('joinBtn');
+
+      try {
+        const response = await fetch(pastebinRawUrl);
+        if (!response.ok) throw new Error('Network error');
+        const text = await response.text();
+        const placeId = text.trim();
+
+        if (/^\d+$/.test(placeId)) {
+          statusEl.textContent = "🟢 Game Online";
+          statusEl.classList.remove('offline');
+          joinBtn.disabled = false;
+          joinBtn.onclick = () => {
+            window.location.href = `roblox://placeID=${placeId}`;
+          };
+        } else {
+          statusEl.textContent = "🔴 Game Offline";
+          statusEl.classList.add('offline');
+          joinBtn.disabled = true;
+          joinBtn.onclick = null;
+        }
+      } catch (error) {
+        statusEl.textContent = "🔴 Error fetching status";
+        statusEl.classList.add('offline');
+        joinBtn.disabled = true;
+        joinBtn.onclick = null;
+        console.error('Fetch error:', error);
+      }
     }
+
+    window.addEventListener('load', fetchPlaceId);
   </script>
 </body>
-</html>  
+</html> 
